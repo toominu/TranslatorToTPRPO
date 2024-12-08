@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Translator</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="translate">Переводчик</string>
+    <string name="deleteFromFav">Удалить из избранного</string>
+</resources>
