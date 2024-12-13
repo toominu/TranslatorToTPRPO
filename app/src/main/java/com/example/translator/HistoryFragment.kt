@@ -7,29 +7,35 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.translator.adapters.adapterHistory
-import com.example.translator.databinding.FragmentHistoryBinding
-import com.example.translator.request.TextHistoryManager
-
+import com.example.translator.adapters.HistoryAdapter
+import com.example.translator.request.TranslationHistoryManager
 
 class HistoryFragment : Fragment() {
+    private lateinit var historyManager: TranslationHistoryManager
+    private lateinit var adapter: HistoryAdapter
 
-    private lateinit var binding: FragmentHistoryBinding
-    private lateinit var historyAdapter : adapterHistory
-    private lateinit var historyRecycleView : RecyclerView
-    override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        historyManager = TranslationHistoryManager(requireContext())
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val view = inflater.inflate(R.layout.fragment_history, container, false)
-//        val context = view?.context
+        val recyclerView: RecyclerView = view.findViewById(R.id.historyView)
+        adapter = HistoryAdapter()
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(context)
 
-        historyRecycleView = view?.findViewById(R.id.historyView)!!
-        historyAdapter = adapterHistory(requireContext())
-        historyRecycleView.layoutManager = LinearLayoutManager(requireContext())
-        historyRecycleView.adapter = historyAdapter
-//        val loadedTextHistory = context?.let { TextHistoryManager.loadTextHistory(it) }
+        loadHistory()
+
         return view
     }
 
-
+    private fun loadHistory() {
+        val historyList = historyManager.getHistoryList()
+        adapter.updateHistoryList(historyList)
+    }
 }

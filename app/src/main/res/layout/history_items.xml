@@ -9,31 +9,66 @@
     android:layout_marginRight="8dp"
     android:elevation="8dp"
     app:cardElevation="0dp"
-    app:cardCornerRadius="10dp">
-    <androidx.constraintlayout.widget.ConstraintLayout
+    app:cardCornerRadius="10dp"
+    app:cardBackgroundColor="#81F4D2D2">
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp">
-
-        <TextView
-            android:id="@+id/sourceTextH"
-            android:layout_width="wrap_content"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="sourceTextH"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/targetTextH"
-            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="8dp">
+            <TextView
+                android:id="@+id/sourceLanguageH"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
+                android:text="sourceLanguageH"/>
+            <TextView
+                android:id="@+id/sourceTextH"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="sourceTextH"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="targetTextH"
-            android:layout_marginTop="10dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/sourceTextH"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="8dp">
+            <TextView
+                android:id="@+id/targetLanguageH"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
+                android:text="targetLanguageH"/>
+            <TextView
+                android:id="@+id/targetTextH"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="targetTextH"/>
+        </LinearLayout>
+    </LinearLayout>
 
 </androidx.cardview.widget.CardView>
+<!--<androidx.constraintlayout.widget.ConstraintLayout-->
+<!--android:layout_width="match_parent"-->
+<!--android:layout_height="wrap_content"-->
+<!--android:padding="10dp">-->
+
+
+
+<!--<TextView-->
+<!--    android:id="@+id/targetTextH"-->
+<!--    android:layout_width="wrap_content"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:text="targetTextH"-->
+<!--    android:layout_marginTop="10dp"-->
+<!--    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--    app:layout_constraintEnd_toEndOf="parent"-->
+<!--    app:layout_constraintStart_toStartOf="parent"-->
+<!--    app:layout_constraintTop_toBottomOf="@+id/sourceTextH"/>-->
+<!--</androidx.constraintlayout.widget.ConstraintLayout>-->

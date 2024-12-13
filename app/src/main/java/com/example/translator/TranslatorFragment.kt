@@ -7,43 +7,45 @@ import androidx.fragment.app.Fragment
 import android.view.Menu
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.PopupMenu
 import android.widget.TextView
 import android.widget.Toast
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import com.example.translator.request.TextHistory.textHistory
-import com.example.translator.request.TextHistoryManager
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
+import androidx.fragment.app.DialogFragment
+//import com.example.translator.request.AppDatabase
+//import com.example.translator.request.HistoryDbEntity
 import com.example.translator.request.TextTranslated
+import com.example.translator.request.TranslationFavoriteManager
+import com.example.translator.request.TranslationHistoryManager
+import com.example.translator.ui.theme.HelpDialogFragment
 import com.google.mlkit.common.model.DownloadConditions
 import com.google.mlkit.nl.translate.TranslateLanguage
 import com.google.mlkit.nl.translate.Translation
 import com.google.mlkit.nl.translate.Translator
 import com.google.mlkit.nl.translate.TranslatorOptions
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.Locale
 
-
-
-/**
- * A simple [Fragment] subclass.
- * Use the [TranslatorFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class TranslatorFragment : Fragment() {
 
     private lateinit var sourceLanguageEnter : EditText
-    private lateinit var targetLanguage : TextView
+    private lateinit var targetText : TextView
     private lateinit var sourceLanguageBtn : Button
     private lateinit var targetLanguageBtn : Button
     private lateinit var translateBtn : Button
+    private lateinit var infoBtn : ImageButton
+    private lateinit var copyBtn : ImageButton
+    private lateinit var clearBtn : ImageButton
+    private lateinit var favBtn : ImageButton
 
     private var languageArrayList: ArrayList<ModelLanguage>? = null
-//    private lateinit var viewModel: MyViewModel
-//    private var myData: String? = null
 
     private var sourceLanguageCode = "en"
     private var sourceLanguageTitle = "English"
@@ -53,41 +55,28 @@ class TranslatorFragment : Fragment() {
     private lateinit var translatorOptions: TranslatorOptions
     private lateinit var translator: Translator
 
-//    private lateinit var progressBar: ProgressBar
+    private lateinit var historyManager: TranslationHistoryManager
+    private lateinit var favoriteManager: TranslationFavoriteManager
 
     companion object{
-        //printing logs
         private const val TAG = "MAIN_TAG"
+    }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        historyManager = TranslationHistoryManager(requireContext())
     }
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-//        super.onCreate(savedInstanceState)
-//        enableEdgeToEdge()
+
         val view = inflater.inflate(R.layout.fragment_translator, container, false)
-//        val context = view.context
 
             sourceLanguageEnter = view.findViewById(R.id.sourceLanguageEnter)
-            targetLanguage = view.findViewById(R.id.targetLanguage)
+            targetText = view.findViewById(R.id.targetLanguage)
             sourceLanguageBtn = view.findViewById(R.id.sourceLanguageBtn)
             targetLanguageBtn = view.findViewById(R.id.targetLanguageBtn)
             translateBtn = view.findViewById(R.id.translateBtn)
-
-    //        progressBar = ProgressBar(this )
-    //        progressBar.setTitle("Please wait")
-    //        progressBar.setCanceledOnTouchOutside(false)
-//        if (savedInstanceState != null) {
-//            myData = savedInstanceState.getString("my_key")
-//        }
-//            viewModel = ViewModelProvider(this).get(MyViewModel::class.java)
-////
-////            // Восстановление данных из ViewModel
-//            val myData = viewModel.myData
-//            // Создание представления фрагмента
-//            // Используйте myData для заполнения UI
-
-
 
 
             loadAvailableLanguages()
@@ -104,6 +93,29 @@ class TranslatorFragment : Fragment() {
             return view
        }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        infoBtn = view.findViewById(R.id.infoBttn)
+        infoBtn.setOnClickListener {
+            val helpDialog = HelpDialogFragment()
+            helpDialog.isCancelable = true // Позволяем закрывать при касании за пределами
+            helpDialog.show(parentFragmentManager, "HelpDialog")
+        }
+        copyBtn = view.findViewById(R.id.copyBttn)
+        copyBtn.setOnClickListener {
+            copyTextToClipboard(targetText.text.toString())
+        }
+        clearBtn = view.findViewById(R.id.emptyBttn)
+        clearBtn.setOnClickListener {
+            sourceLanguageEnter.text.clear()
+            targetText.text=""
+        }
+        favBtn = view.findViewById(R.id.favoriteBttn)
+        favBtn.setOnClickListener {
+            val favorite = TextTranslated(sourceLanguageTitle, targetLanguageTitle, sourceLanguageText, targetText.text.toString())
+            favoriteManager.saveTranslation(favorite)
+        }
+    }
 
     private var sourceLanguageText = ""
     private fun validateData() {
@@ -117,10 +129,7 @@ class TranslatorFragment : Fragment() {
     }
 
     private fun starTranslation() {
-//        progressBar.setMessage("Processing language")
-//        progressBar.show()
-
-        translatorOptions = TranslatorOptions.Builder()
+     translatorOptions = TranslatorOptions.Builder()
             .setSourceLanguage(sourceLanguageCode)
             .setTargetLanguage(targetLanguageCode)
             .build()
@@ -132,24 +141,20 @@ class TranslatorFragment : Fragment() {
         translator.downloadModelIfNeeded(downloadConditions)
             .addOnSuccessListener {
                 Log.d(TAG, "startTranslation: model's ready, start translating ...")
-//                progressBar.setMessage("Translating")
                 translator.translate(sourceLanguageText)
                     .addOnSuccessListener { translatedText ->
                         Log.d(TAG, "startTranslation: translatedText: $translatedText")
-                        textHistory.add(TextTranslated(sourceLanguageText, translatedText))
-//                        context?.let { it1 -> TextHistoryManager.saveTextHistory(it1, textHistory) }
+                        targetText.text = translatedText
+                        val history = TextTranslated(sourceLanguageTitle, targetLanguageTitle, sourceLanguageText, translatedText)
+                        historyManager.saveTranslation(history)
 
-                        targetLanguage.text = translatedText
-//                        progressBar.dismiss()
                     }
                     .addOnFailureListener { e ->
-//                        progressBar.dismiss()
                         Log.e( TAG, "startTranslation: ", e)
                         showToast("Не удалось из-за ${e.message}")
                     }
             }
             .addOnFailureListener{ e ->
-//                progressBar.dismiss()
                 Log.e( TAG, "startTranslation: ", e)
                 showToast("Не удалось из-за ${e.message}")
             }
@@ -220,13 +225,12 @@ class TranslatorFragment : Fragment() {
     private fun showToast( message: String){
         Toast.makeText(getActivity(), message, Toast.LENGTH_LONG).show()
     }
+    private fun copyTextToClipboard(text: String) {
+        val clipboard = requireActivity().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val clip = ClipData.newPlainText("label", text)
+        clipboard.setPrimaryClip(clip)
 
-//    class MyViewModel : ViewModel() {
-//        var myData: String? = null
-//    }
-//    override fun onSaveInstanceState(outState: Bundle) {
-//        super.onSaveInstanceState(outState)
-//        // Сохранение данных в Bundle
-//        outState.putString("my_key", viewModel.myData)
-//    }
+        Toast.makeText(requireContext(), "Текст скопирован в буфер обмена", Toast.LENGTH_SHORT).show()
+    }
+
 }

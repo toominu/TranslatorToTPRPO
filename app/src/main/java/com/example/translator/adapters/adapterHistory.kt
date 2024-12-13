@@ -1,37 +1,47 @@
 package com.example.translator.adapters
 
-import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.translator.databinding.HistoryItemsBinding
-import com.example.translator.request.TextHistory.getHistoryTargetText
-import com.example.translator.request.TextHistory.getHistorySourceText
-import com.example.translator.request.TextHistory.textHistory
+import com.example.translator.R
+import com.example.translator.request.TextTranslated
 
+class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() {
+    private var historyList: List<TextTranslated> = emptyList()
 
-class adapterHistory (val context : Context,
-) : RecyclerView.Adapter<adapterHistory.HistoryViewHolder>()  {
-
-    class HistoryViewHolder(binding: HistoryItemsBinding) : RecyclerView.ViewHolder(binding.root) {
-        val sourceText = binding.sourceTextH
-        val targetText = binding.targetTextH
-    }
-
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): HistoryViewHolder {
-        val binding = HistoryItemsBinding.inflate(LayoutInflater.from(context), parent, false)
-        return HistoryViewHolder(binding)
-    }
-
-    override fun getItemCount(): Int {
-        return textHistory.size
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HistoryViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.history_items, parent, false)
+        return HistoryViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: HistoryViewHolder, position: Int) {
-        holder.sourceText.text = getHistorySourceText(textHistory[position])
-        holder.targetText.text = getHistoryTargetText(textHistory[position])
+        val history = historyList[position]
+        holder.bind(history)
+    }
+
+    override fun getItemCount(): Int {
+        return historyList.size
+    }
+
+    // Метод для обновления списка
+    fun updateHistoryList(newHistoryList: List<TextTranslated>) {
+        historyList = newHistoryList
+        notifyDataSetChanged() // Уведомляем адаптер о том, что данные изменились
+    }
+
+    class HistoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val sourceLanguageTextView: TextView = itemView.findViewById(R.id.sourceLanguageH)
+        private val sourceTextTextView: TextView = itemView.findViewById(R.id.sourceTextH)
+        private val targetLanguageTextView: TextView = itemView.findViewById(R.id.targetLanguageH)
+        private val targetTextTextView: TextView = itemView.findViewById(R.id.targetTextH)
+
+        fun bind(history: TextTranslated) {
+            sourceLanguageTextView.text = history.sourceLanguage
+            sourceTextTextView.text = history.sourceText
+            targetLanguageTextView.text = history.targetLanguage
+            targetTextTextView.text = history.translatedText
+        }
     }
 }

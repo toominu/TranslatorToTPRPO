@@ -4,4 +4,10 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="translate">Переводчик</string>
     <string name="deleteFromFav">Удалить из избранного</string>
+    <string name="instruction_help_dialog">\n- Перевод текста: Выберите языки перевода и введите текст в поле ввода. Нажмите \"Перевести\", чтобы получить результат. \n\n- Избранное: Чтобы сохранить перевод в избранное, нажмите кнопку \"Добавить в избранное\" после получения перевода. \n\n- История переводов: Вы можете просмотреть все ваши переводы в разделе \"История\".\n</string>
+    <string name="description_of_programm_help_dialog">\n\tЭто приложение переводчик, которое позволяет перевести текст между различными языками.\n\tИнструкция по использованию:</string>
+    <string name="contacts_help_dialog">Контактная информация: \n2021102468@pnu.edu.ru</string>
+    <string name="version_help_dialog">\nВерсия: 1</string>
+    <string name="name_help_dialog">Название приложения: Translator</string>
+    <string name="close_help_dialog">Close help dialog</string>
 </resources>
