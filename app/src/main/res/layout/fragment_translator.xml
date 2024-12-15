@@ -16,7 +16,7 @@
             android:id="@+id/infoBttn"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:src="@drawable/ic_action_name"
+            android:src="@drawable/ic_action_info"
             android:background="@null"
             android:layout_marginEnd="16dp"
             android:padding="12dp"
@@ -25,7 +25,7 @@
             android:id="@+id/favoriteBttn"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:src="@drawable/ic_action_name"
+            android:src="@drawable/ic_action_favorite"
             android:background="@null"
             android:layout_marginEnd="16dp"
             android:contentDescription="addToFavorite"/>
@@ -33,7 +33,7 @@
             android:id="@+id/copyBttn"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:src="@drawable/ic_action_name"
+            android:src="@drawable/ic_action_content_copy"
             android:background="@null"
             android:layout_marginEnd="16dp"
             android:contentDescription="copyTranslatedText"/>
@@ -41,7 +41,7 @@
             android:id="@+id/emptyBttn"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:src="@drawable/ic_action_name"
+            android:src="@drawable/ic_action_clear"
             android:background="@null"
             android:contentDescription="clearAllText"/>
     </LinearLayout>
@@ -89,7 +89,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_action_name"/>
+            android:src="@drawable/ic_action_arrow_forward"/>
         <Button
             android:id="@+id/targetLanguageBtn"
             android:layout_width="128dp"

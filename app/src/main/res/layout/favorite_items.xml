@@ -57,7 +57,7 @@
             android:id="@+id/deleteBttnFav"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:src="@drawable/ic_action_name"
+            android:src="@drawable/ic_action_clear"
             android:background="@null"
             android:contentDescription="@string/deleteFromFav"
             app:layout_constraintBottom_toBottomOf="@+id/targetTextF"

@@ -9,9 +9,9 @@ class TranslationFavoriteManager(context: Context) {
     private val sharedPreferences: SharedPreferences = context.getSharedPreferences("TranslationFavorites", Context.MODE_PRIVATE)
     private val gson = Gson()
 
-    fun saveTranslation(history: TextTranslated) {
+    fun saveTranslation(favorite: TextTranslated) {
         val favoriteList = getFavoriteList().toMutableList()
-        favoriteList.add(history)
+        favoriteList.add(favorite)
 
         // Ограничиваем количество записей до 20
         if (favoriteList.size > 20) {
@@ -35,9 +35,15 @@ class TranslationFavoriteManager(context: Context) {
     }
     fun deleteElemFavorite( index: Int){
         val favoriteList = getFavoriteList().toMutableList()
-        val editor = sharedPreferences.edit()
-        favoriteList.removeAt(index)
-        editor.apply()
+        if (index >= 0 && index < favoriteList.size) {
+            favoriteList.removeAt(index) // Удаляем элемент по индексу
+
+            // Сохраняем обновленный список обратно в SharedPreferences
+            val editor = sharedPreferences.edit()
+            val json = gson.toJson(favoriteList)
+            editor.putString("favorite", json)
+            editor.apply()
+        }
     }
     fun clearFavorite() {
         val editor = sharedPreferences.edit()

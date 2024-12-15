@@ -28,9 +28,7 @@ import com.google.mlkit.nl.translate.TranslateLanguage
 import com.google.mlkit.nl.translate.Translation
 import com.google.mlkit.nl.translate.Translator
 import com.google.mlkit.nl.translate.TranslatorOptions
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+
 import java.util.Locale
 
 class TranslatorFragment : Fragment() {
@@ -64,6 +62,7 @@ class TranslatorFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         historyManager = TranslationHistoryManager(requireContext())
+        favoriteManager = TranslationFavoriteManager(requireContext())
     }
 
     override fun onCreateView(inflater: LayoutInflater,

@@ -8,13 +8,16 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.translator.adapters.HistoryAdapter
-import com.example.translator.adapters.adapterFavorite
+import com.example.translator.adapters.FavoriteAdapter
+import com.example.translator.request.TextTranslated
 import com.example.translator.request.TranslationFavoriteManager
 import com.example.translator.request.TranslationHistoryManager
 
 class FavoriteFragment : Fragment() {
     private lateinit var favoriteManager: TranslationFavoriteManager
-    private lateinit var adapter: adapterFavorite
+    private lateinit var adapter: FavoriteAdapter
+    private var favoriteList: List<TextTranslated> = emptyList()
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,10 +31,10 @@ class FavoriteFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_favorite, container, false)
         val recyclerView: RecyclerView = view.findViewById(R.id.favoriteView)
-        adapter = adapterFavorite()
+
+        adapter = FavoriteAdapter(favoriteList, favoriteManager, requireContext())
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context)
-
 
         loadFavorite()
 

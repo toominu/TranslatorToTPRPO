@@ -1,5 +1,6 @@
 package com.example.translator.adapters
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,9 +9,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.translator.R
 import com.example.translator.request.TextTranslated
+import com.example.translator.request.TranslationFavoriteManager
 
-class adapterFavorite  : RecyclerView.Adapter<adapterFavorite.FavoriteViewHolder>() {
-    private var favoriteList: List<TextTranslated> = emptyList()
+class FavoriteAdapter(
+    private var favoriteList: List<TextTranslated>,
+    private val favoriteManager: TranslationFavoriteManager,
+    private val context: Context
+) : RecyclerView.Adapter<FavoriteAdapter.FavoriteViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FavoriteViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.favorite_items, parent, false)
@@ -22,7 +27,9 @@ class adapterFavorite  : RecyclerView.Adapter<adapterFavorite.FavoriteViewHolder
         holder.bind(favorite)
 
         holder.deleteFromFBtn.setOnClickListener {
-            removeItem(favorite)        }
+            favoriteManager.deleteElemFavorite(position)
+            favoriteList = favoriteManager.getFavoriteList()
+            notifyDataSetChanged()}
     }
 
     override fun getItemCount(): Int {
