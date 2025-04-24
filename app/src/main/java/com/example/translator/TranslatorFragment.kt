@@ -17,8 +17,6 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import androidx.fragment.app.DialogFragment
-//import com.example.translator.request.AppDatabase
-//import com.example.translator.request.HistoryDbEntity
 import com.example.translator.request.TextTranslated
 import com.example.translator.request.TranslationFavoriteManager
 import com.example.translator.request.TranslationHistoryManager
@@ -97,7 +95,7 @@ class TranslatorFragment : Fragment() {
         infoBtn = view.findViewById(R.id.infoBttn)
         infoBtn.setOnClickListener {
             val helpDialog = HelpDialogFragment()
-            helpDialog.isCancelable = true // Позволяем закрывать при касании за пределами
+            helpDialog.isCancelable = true 
             helpDialog.show(parentFragmentManager, "HelpDialog")
         }
         copyBtn = view.findViewById(R.id.copyBttn)
