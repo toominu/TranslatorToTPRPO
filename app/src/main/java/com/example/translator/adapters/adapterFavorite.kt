@@ -36,16 +36,15 @@ class FavoriteAdapter(
         return favoriteList.size
     }
 
-    // Метод для обновления списка
     fun updateFavoriteList(newFavoriteList: List<TextTranslated>) {
         favoriteList = newFavoriteList
-        notifyDataSetChanged() // Уведомляем адаптер о том, что данные изменились
+        notifyDataSetChanged() 
     }
     fun removeItem(favorite: TextTranslated) {
         val updatedList = favoriteList.toMutableList()
         updatedList.remove(favorite)
         favoriteList = updatedList
-        notifyDataSetChanged() // Уведомляем адаптер о том, что данные изменились
+        notifyDataSetChanged() 
     }
     class FavoriteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val sourceLanguageTextView: TextView = itemView.findViewById(R.id.sourceLanguageF)
