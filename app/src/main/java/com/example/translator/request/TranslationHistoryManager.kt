@@ -13,9 +13,8 @@ class TranslationHistoryManager(context: Context) {
         val historyList = getHistoryList().toMutableList()
         historyList.add(history)
 
-        // Ограничиваем количество записей до 20
         if (historyList.size > 20) {
-            historyList.removeAt(0) // Удаляем самый старый элемент
+            historyList.removeAt(0)
         }
 
         val editor = sharedPreferences.edit()
