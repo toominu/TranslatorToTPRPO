@@ -13,9 +13,8 @@ class TranslationFavoriteManager(context: Context) {
         val favoriteList = getFavoriteList().toMutableList()
         favoriteList.add(favorite)
 
-        // Ограничиваем количество записей до 20
         if (favoriteList.size > 20) {
-            favoriteList.removeAt(0) // Удаляем самый старый элемент
+            favoriteList.removeAt(0)
         }
 
         val editor = sharedPreferences.edit()
@@ -36,7 +35,7 @@ class TranslationFavoriteManager(context: Context) {
     fun deleteElemFavorite( index: Int){
         val favoriteList = getFavoriteList().toMutableList()
         if (index >= 0 && index < favoriteList.size) {
-            favoriteList.removeAt(index) // Удаляем элемент по индексу
+            favoriteList.removeAt(index) 
 
             // Сохраняем обновленный список обратно в SharedPreferences
             val editor = sharedPreferences.edit()
