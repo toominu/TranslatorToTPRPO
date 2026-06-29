@@ -37,7 +37,6 @@ class TranslationFavoriteManager(context: Context) {
         if (index >= 0 && index < favoriteList.size) {
             favoriteList.removeAt(index) 
 
-            // Сохраняем обновленный список обратно в SharedPreferences
             val editor = sharedPreferences.edit()
             val json = gson.toJson(favoriteList)
             editor.putString("favorite", json)
