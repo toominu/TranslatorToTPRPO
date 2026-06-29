@@ -25,10 +25,9 @@ class HistoryAdapter : RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() 
         return historyList.size
     }
 
-    // Метод для обновления списка
     fun updateHistoryList(newHistoryList: List<TextTranslated>) {
         historyList = newHistoryList
-        notifyDataSetChanged() // Уведомляем адаптер о том, что данные изменились
+        notifyDataSetChanged() 
     }
 
     class HistoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
